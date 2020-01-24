@@ -1,0 +1,75 @@
+#include <algorithm>
+#include <iostream>
+#include <vector>
+#include <utility>
+
+using namespace std;
+
+#define ll long long
+
+const int MOD = 1e9;
+
+int N;
+vector<int> tab;
+vector<vector<pair<ll, ll> > > dynamic;
+
+int calculate(int s, int e, bool right) {
+    if (s > e)
+        return 0;
+    if (s == e)
+        return 1;
+
+    ll sum = 0;
+
+    if (right == true && e-1 >= 0 && tab[e] > tab[e - 1])
+        sum += dynamic[s][e - 1].first;
+    if (right == true && e-1 >= 0 && tab[s] < tab[e])
+        sum += dynamic[s][e - 1].second;
+
+    if (right == false && s+1 < N && tab[s] < tab[s + 1])
+        sum += dynamic[s + 1][e].second;
+    if (right == false && s+1 < N && tab[e] > tab[s])
+        sum += dynamic[s + 1][e].first;
+
+    return sum % MOD;
+}
+
+void read() {
+    cin >> N;
+
+    tab.resize(N);
+
+    for (int i = 0; i < N; i++)
+        cin >> tab[i];
+}
+
+void prepare() {
+    dynamic.resize(N + 1);
+
+    for (int j = 0; j < N + 1; j++)
+        dynamic[j].resize(N, make_pair(0, 0));
+}
+
+void solve() {
+    for (int i = 0; i < N; i++)
+        dynamic[i][i] = make_pair(1, 0);
+
+    for (int i = N - 1; i >= 0; i--)
+        for (int j = i + 1; j < N; j++){
+            dynamic[i][j].first = calculate(i, j, true);
+            dynamic[i][j].second = calculate(i, j, false);
+        }
+
+    cout << ((dynamic[0][N-1].second + dynamic[0][N-1].first) % MOD) << "\n";
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    read();
+    prepare();
+    solve();
+
+    return 0;
+}
