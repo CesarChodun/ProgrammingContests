@@ -12,4 +12,5 @@ A | Card Game | :heavy_check_mark:
 B | Interesting Subarray | :heavy_check_mark:
 C | Make Good | :heavy_check_mark:
 D | Strange Device | :heavy_check_mark:
-E - I | ... | :x:
+E | Divide Points | :heavy_check_mark:
+F - I | ... | :x:
